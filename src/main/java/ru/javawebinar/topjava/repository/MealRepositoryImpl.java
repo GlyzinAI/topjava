@@ -1,52 +1,44 @@
 package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealRepositoryImpl implements MealRepository {
-    private final Map<Integer, Meal> storage;
+    private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        storage = Stream.of(
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
-                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
-        ).collect(Collectors.toConcurrentMap(Meal::getId, Function.identity()));
-
+        MealsUtil.STORAGE.forEach(this::save);
     }
-
 
     @Override
-    public void add(Meal meal) {
-        storage.put(meal.getId(), meal);
+    public Meal save(Meal meal) {
+        if (!meal.isExist()) {
+            meal.setId(counter.incrementAndGet());
+            repository.put(meal.getId(), meal);
+            return meal;
+        }
+        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
-
 
     @Override
     public Meal get(int id) {
-        return storage.get(id);
+        return repository.get(id);
     }
 
     @Override
     public void delete(int id) {
-        storage.remove(id);
+        repository.remove(id);
     }
 
     @Override
     public List<Meal> getAll() {
-        return storage.values().stream()
-                .sorted(Comparator.comparing(Meal::getDateTime))
-                .collect(Collectors.toList());
+        return new ArrayList<>(repository.values());
     }
 }
