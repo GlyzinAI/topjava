@@ -3,27 +3,12 @@
 
 <html>
 <head>
-    <title>Meal</title>
-    <style>
-        dl {
-            background: none repeat scroll 0 0 #FAFAFA;
-            margin: 8px 0;
-            padding: 0;
-        }
-
-        dt {
-            display: inline-block;
-            width: 170px;
-        }
-
-        dd {
-            display: inline-block;
-            margin-left: 8px;
-            vertical-align: top;
-        }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>${param.action == 'save' ? 'Create meal' : 'Edit meal'}</title>
 </head>
 <body>
+<jsp:include page="fragments/header.jsp"/>
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr>
@@ -47,5 +32,6 @@
         <button onclick="window.history.back()" type="button">Cancel</button>
     </form>
 </section>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
