@@ -82,6 +82,11 @@ public class MealServiceTest {
         assertMatch(service.get(FIRST_MEAL.getId(), USER_ID), updated);
     }
 
+    @Test(expected = NotFoundException.class)
+    public void updateAnotherUserMeal() {
+        service.update(FIRST_ADMIN_MEAL, USER_ID);
+    }
+
     @Test
     public void create() {
         Meal newMeal = new Meal(LocalDateTime.now(), "desc", 1000);
