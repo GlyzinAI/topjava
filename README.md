@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6df9808fa24e4a079c848cd8d72cca54)](https://www.codacy.com/app/GlyzinAI/topjava?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GlyzinAI/topjava&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/GlyzinAI/topjava.svg?branch=master)](https://travis-ci.org/GlyzinAI/topjava)
 
 Java Enterprise Online Project 
 ===============================
