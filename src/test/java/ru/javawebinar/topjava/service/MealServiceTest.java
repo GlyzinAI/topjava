@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,10 +34,13 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
 
+    private static StringBuilder res = new StringBuilder();
+
     private static void logInfo(Description description, String status, long nanos) {
         String testName = description.getMethodName();
-        log.info(String.format("Test %s %s, spent %d microseconds",
-                testName, status, TimeUnit.NANOSECONDS.toMicros(nanos)));
+        String str = String.format("Test %s %s, spent %d microseconds", testName, status, TimeUnit.MILLISECONDS.toMicros(nanos));
+        res.append(str).append("\n");
+        log.info(str);
     }
 
     @Rule
@@ -49,6 +53,11 @@ public class MealServiceTest {
             logInfo(description, "finished", nanos);
         }
     };
+
+    @AfterClass
+    public static void printResume() {
+        log.info("\nTests:\n-------------------\n" + res + "-------------------------");
+    }
 
     @Autowired
     private MealService service;
