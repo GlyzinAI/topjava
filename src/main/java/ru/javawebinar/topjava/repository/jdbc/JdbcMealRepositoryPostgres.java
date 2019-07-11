@@ -5,10 +5,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 @Profile("postgres")
 public class JdbcMealRepositoryPostgres extends AbstractJdbcMealRepository {
     public JdbcMealRepositoryPostgres(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, namedParameterJdbcTemplate);
+    }
+
+    @Override
+    protected LocalDateTime convertDateTime(LocalDateTime ldt) {
+        return ldt;
     }
 }
